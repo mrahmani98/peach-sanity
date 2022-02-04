@@ -1,9 +1,32 @@
+import React from 'react';
+
 export default {
   title: 'Article',
   name: 'article',
   type: 'document',
   initialValue: {
     type: 'article',
+    isActive: true,
+    premium: false,
+  },
+  preview: {
+    select: {
+      title: 'title',
+      media: 'image',
+      active: 'isActive',
+      premium: 'premium',
+    },
+    prepare({ title, media, active, premium }) {
+      let test = '';
+      if (active) test += '🟩';
+      else test += '🟥';
+      if (premium) test += ' 💰';
+      return {
+        title: title,
+        subtitle: test,
+        media: media,
+      };
+    },
   },
   fields: [
     {
@@ -42,7 +65,9 @@ export default {
       options: {
         list: [
           { title: 'Article', value: 'article' },
-          { title: 'Santé', value: 'sante' },
+          { title: 'Témoignage', value: 'temoignage' },
+          { title: 'Story', value: 'story' },
+          { title: 'Interview', value: 'interview' },
         ],
         layout: 'radio',
       },
@@ -52,6 +77,7 @@ export default {
       name: 'category',
       type: 'reference',
       to: [{ type: 'category' }],
+      validation: (Rule) => Rule.required(),
     },
     {
       title: 'Is Active',
